@@ -1,0 +1,2 @@
+Scrapy==0.22.2
+scrapy-mongodb==0.7.1
