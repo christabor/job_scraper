@@ -6,4 +6,6 @@
 
 class FilterJobDetailsPipeline(object):
     def process_item(self, item, spider):
+        for k, el in item.iteritems():
+            el = el.strip()
         return item
