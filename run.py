@@ -1,3 +1,4 @@
+from pprint import pprint as ppr
 import json
 import os
 from pyquery import PyQuery as pq
@@ -16,6 +17,15 @@ def process_all():
     f.close()
 
 
+def get_spiders_list():
+    # Convention: 'name' attribute used for scrapy should match
+    # the file name, minus the _spider string.
+    files = [name.replace('_spider.py', '') for name in
+             os.listdir('jobs/spiders') if name.endswith('py')
+             and name != '__init__.py']
+    return files
+
+
 def process_one(spider, keyword):
     cmd = ('scrapy crawl {spider} '
            '-a category={keyword} -o '
@@ -28,14 +38,19 @@ def process_one(spider, keyword):
         pass
 
 
-def run_all():
-    """Use with caution"""
+def load_all_categories():
     with open(ALL_CATEGORIES, 'rb') as jobs:
         categories = dict(json.loads(jobs.read()))
         jobs.close()
-        for k, keywords in categories.iteritems():
-            for keyword in keywords:
-                process_one(keyword)
+    return categories
+
+
+def run_all():
+    """Use with caution"""
+    categories = load_all_categories()
+    for k, keywords in categories.iteritems():
+        for keyword in keywords:
+            process_one(keyword)
 
 
 def _process_link(k, link):
@@ -58,9 +73,12 @@ if process_first == 'y':
 if run_all_tests == 'y':
     run_all()
 else:
-    spider = raw_input('Enter a spider to run: ')
-    if spider == 'careerbuilder-job':
-        keyword = raw_input('Enter a keyword to run: ')
-    else:
-        keyword = None
-    process_one(spider, keyword)
+    print 'Enter a spider to run: '
+    print get_spiders_list()
+    spider = raw_input('Spider: ==> ')
+    if spider == 'careerbuilder':
+        print 'Enter a job title to run:'
+        print ppr(load_all_categories())
+        keyword = raw_input('Title: ==> ')
+        if keyword:
+            process_one(spider, keyword)
