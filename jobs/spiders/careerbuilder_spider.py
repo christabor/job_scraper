@@ -2,7 +2,6 @@ from scrapy.spider import Spider
 from pyquery import PyQuery as pq
 from jobs.items import JobDetail
 
-SAVE_ROOT = 'data/'
 root_url = 'http://www.careerbuilder.com/'
 job_list_url = '{}jobs/keyword/__KEYWORD__?Ipath=BJTSE0'.format(root_url)
 job_detail_url = '{}jobseeker/jobs/jobdetails.aspx?'.format(root_url)
@@ -10,8 +9,8 @@ job_detail_url = '{}jobseeker/jobs/jobdetails.aspx?'.format(root_url)
 # Selectors
 job_title_id = '#job-titles'
 detail_link_class = '.jt.prefTitle'
-detail_job_description_class = '.pnlJobDescription'
 detail_container = '#CBBody_contentmain'
+custom_detail_container = '#JobDetails_ucJobDetailsSkin_tdJSCenter'
 
 
 class CareerBuilderJobSpider(Spider):
@@ -39,22 +38,33 @@ class CareerBuilderJobSpider(Spider):
         self.start_urls = self.urls
 
     def parse(self, response):
-        html = pq(response.body).find(detail_container)
+        """This is unfortunately not dependable, nor can it be, with the
+        the extremely arbitrary html layouts provided. Often times they are
+        custom classes or tags tailored to each company, with a 'custom theme',
+        so making it work perfectly without some kind of NLP or
+        Machine Learning is probably impossible without a
+        bunch of manual if/else type logic :("""
+        item = '.snap-line'
+        resp = pq(response.body)
+        html = resp.find(detail_container)
         job = JobDetail()
-        snapshot = html.find('.section-body:last')
-
-        job['description'] = html('#pnlJobDescription > p').text()
-        job['pay'] = snapshot.find('.snap-line').eq(0).text()
-        job['other_pay'] = snapshot.find('.snap-line').eq(1).text()
-        job['employment_type'] = snapshot.find('.snap-line').eq(2).text()
-        job['job_type'] = snapshot.find('.snap-line').eq(3).text()
-        job['education'] = snapshot.find('.snap-line').eq(4).text()
-        job['experience'] = snapshot.find('.snap-line').eq(5).text()
-        job['manages_others'] = snapshot.find('.snap-line').eq(6).text()
-        job['relocation'] = snapshot.find('.snap-line').eq(7).text()
-        job['industry'] = snapshot.find('.snap-line').eq(8).text()
-        job['required_travel'] = snapshot.find('.snap-line').eq(9).text()
-        job['job_ID'] = snapshot.find('.snap-line').eq(10).text()
-        job['requirements'] = html.find(
-            '.section-body:first').find('ul').text()
+        # Try to re-evaulate for custom skinned pages
+        if not html:
+            html = resp.find(custom_detail_container)
+        if not html:
+            return job
+        # Populate with custom fields
+        job['description'] = html('#pnlJobDescription').text()
+        job['requirements'] = html.find('.section-body:first').find('li').text()
+        job['pay'] = html.find(item + ':contains("Base Pay")').text()
+        job['other_pay'] = html.find(item + ':contains("Other Pay")').text()
+        job['employment_type'] = html.find(item + ':contains("Employment Type")').text()
+        job['job_type'] = html.find(item + ':contains("Job Type")').text()
+        job['education'] = html.find(item + ':contains("Education")').text()
+        job['experience'] = html.find(item + ':contains("Experience")').text()
+        job['manages_others'] = html.find(item + ':contains("Manages Others")').text()
+        job['relocation'] = html.find(item + ':contains("Relocation")').text()
+        job['industry'] = html.find(item + ':contains("Industry")').text()
+        job['required_travel'] = html.find(item + ':contains("Required Travel")').text()
+        job['job_ID'] = html.find(item + ':contains("Job ID")').text()
         return job
