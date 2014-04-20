@@ -16,10 +16,12 @@ def process_all():
     f.close()
 
 
-def process_one(keyword):
-    cmd = ('scrapy crawl careerbuilder-job '
-           '-a category={category} -o '
-           'data/{category}.json -t json'.format(category=keyword))
+def process_one(spider, keyword):
+    cmd = ('scrapy crawl {spider} '
+           '-a category={keyword} -o '
+           'data/{spider}/{keyword}.json -t json'.format(
+                spider=spider,
+                keyword=keyword))
     try:
         os.system(cmd)
     except OSError:
@@ -56,5 +58,9 @@ if process_first == 'y':
 if run_all_tests == 'y':
     run_all()
 else:
-    category = raw_input('Enter a category to run: ')
-    process_one(category)
+    spider = raw_input('Enter a spider to run: ')
+    if spider == 'careerbuilder-job':
+        keyword = raw_input('Enter a keyword to run: ')
+    else:
+        keyword = None
+    process_one(spider, keyword)
