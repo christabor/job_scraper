@@ -14,7 +14,7 @@ custom_detail_container = '#JobDetails_ucJobDetailsSkin_tdJSCenter'
 
 
 class CareerBuilderJobSpider(Spider):
-    name = 'careerbuilder-job'
+    name = 'careerbuilder'
     urls = []
 
     def _kword_url(self, keyword):
