@@ -54,6 +54,7 @@ class CareerBuilderJobSpider(Spider):
         if not html:
             return job
         # Populate with custom fields
+        job['url'] = response.url
         job['description'] = html('#pnlJobDescription').text()
         job['requirements'] = html.find('.section-body:first').find('li').text()
         job['pay'] = html.find(item + ':contains("Base Pay")').text()

@@ -58,6 +58,7 @@ from scrapy.item import Item, Field
 
 class JobDetail(Item):
     # define the fields for your item here like:
+    url = Field()
     location = Field()
     date = Field()
     company = Field()
