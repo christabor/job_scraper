@@ -7,5 +7,7 @@
 class FilterJobDetailsPipeline(object):
     def process_item(self, item, spider):
         for k, el in item.iteritems():
-            el = el.strip()
+            # Replace duplicate key from matching
+            # pseudoselector
+            el = el.strip().replace(k, '')
         return item

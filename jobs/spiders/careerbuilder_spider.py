@@ -6,11 +6,7 @@ root_url = 'http://www.careerbuilder.com/'
 job_list_url = '{}jobs/keyword/__KEYWORD__?Ipath=BJTSE0'.format(root_url)
 job_detail_url = '{}jobseeker/jobs/jobdetails.aspx?'.format(root_url)
 
-# Selectors
-job_title_id = '#job-titles'
 detail_link_class = '.jt.prefTitle'
-detail_container = '#CBBody_contentmain'
-custom_detail_container = '#JobDetails_ucJobDetailsSkin_tdJSCenter'
 
 
 class CareerBuilderJobSpider(Spider):
@@ -38,34 +34,29 @@ class CareerBuilderJobSpider(Spider):
         self.start_urls = self.urls
 
     def parse(self, response):
+        # import pdb;pdb.set_trace()  # Leave in for easy debugging inline
         """This is unfortunately not dependable, nor can it be, with the
         the extremely arbitrary html layouts provided. Often times they are
         custom classes or tags tailored to each company, with a 'custom theme',
         so making it work perfectly without some kind of NLP or
         Machine Learning is probably impossible without a
         bunch of manual if/else type logic :("""
-        item = '.snap-line'
-        resp = pq(response.body)
-        html = resp.find(detail_container)
+        html = pq(response.body)
         job = JobDetail()
-        # Try to re-evaulate for custom skinned pages
-        if not html:
-            html = resp.find(custom_detail_container)
-        if not html:
-            return job
+
         # Populate with custom fields
         job['url'] = response.url
         job['description'] = html('#pnlJobDescription').text()
         job['requirements'] = html.find('.section-body:first').find('li').text()
-        job['pay'] = html.find(item + ':contains("Base Pay")').text()
-        job['other_pay'] = html.find(item + ':contains("Other Pay")').text()
-        job['employment_type'] = html.find(item + ':contains("Employment Type")').text()
-        job['job_type'] = html.find(item + ':contains("Job Type")').text()
-        job['education'] = html.find(item + ':contains("Education")').text()
-        job['experience'] = html.find(item + ':contains("Experience")').text()
-        job['manages_others'] = html.find(item + ':contains("Manages Others")').text()
-        job['relocation'] = html.find(item + ':contains("Relocation")').text()
-        job['industry'] = html.find(item + ':contains("Industry")').text()
-        job['required_travel'] = html.find(item + ':contains("Required Travel")').text()
-        job['job_ID'] = html.find(item + ':contains("Job ID")').text()
+        job['pay'] = html.find(':contains("Base Pay")').next().text()
+        job['other_pay'] = html.find(':contains("Other Pay")').next().text()
+        job['employment_type'] = html.find(':contains("Employment Type")').next().text()
+        job['job_type'] = html.find(':contains("Job Type")').next().text()
+        job['education'] = html.find(':contains("Education")').next().text()
+        job['experience'] = html.find(':contains("Experience")').next().text()
+        job['manages_others'] = html.find(':contains("Manages Others")').next().text()
+        job['relocation'] = html.find(':contains("Relocation")').next().text()
+        job['industry'] = html.find(':contains("Industry")').next().text()
+        job['required_travel'] = html.find(':contains("Required Travel")').next().text()
+        job['job_ID'] = html.find(':contains("Job ID")').next().text()
         return job
