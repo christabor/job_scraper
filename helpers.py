@@ -49,7 +49,7 @@ def run_all():
     categories = load_all_categories()
     for k, keywords in categories.iteritems():
         for keyword in keywords:
-            process_one(keyword)
+            process_one('careerbuilder', keyword)
 
 
 def _process_link(k, link):
