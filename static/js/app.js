@@ -1,29 +1,33 @@
 var jobsApp = (function(){
 	'use strict';
 
+	var DEBUG = false;
 	var $loader = $('.loader');
 	var $results = $('#results');
 
-	function loadData(e) {
-		var filename = $(this).attr('href');
-		loader();
+	function loadJSON(e) {
+		var filename = $(this).attr('href') + '.json';
+		loader('Loading');
 		e.preventDefault();
 		e.stopImmediatePropagation();
-		d3.json(filename, function(error, json) {
-			// SEE:
-			// https://github.com/mbostock/d3/wiki/Requests
-			if(error) {
-				$results.html('Could not load this file.')
+		d3.json(filename, function(data) {
+			// SEE: https://github.com/mbostock/d3/wiki/Requests
+			if(!data) {
+				$results.html('File does not exist or could not be loaded.');
 				unloader();
 				return;
 			}
-			loaded($.parseJSON(json));
+			loader('Adding...');
+			$results.empty();
+			loaded(data);
 		});
 	}
 
-	function loader() {
+	function loader(msg) {
 		$loader.removeClass('hidden');
 		$results.removeClass('hidden');
+		if(!msg) return;
+		$loader.find('.content').text(msg);
 	}
 
 	function unloader() {
@@ -31,51 +35,30 @@ var jobsApp = (function(){
 	}
 
 	function loaded(data) {
-		log(data);
-		var w = $results.width();
-		var $svg;
-		$results.empty();
-		$svg = d3.select('#results')
-		.append('svg')
-		.attr('width', w)
-		.attr('height', w);
+		if(DEBUG) log(data);
+		// TODO: visualizations
+		var $svg = d3.select('#results');
+		var text = $svg.append('g').attr('class', 'text-group');
 
-		var text = $svg.append('g')
-		.attr('id', 'text-group');
-		text.selectAll('text')
+		text.selectAll('p')
 		.data(data)
 		.enter()
-		.append('text')
-		.attr('x', function(k, d){
-			return 0;
-		})
-		.attr('y', function(k, d){
-			return d * 20 + 20;
-		})
-		.text(function(d){
-			log(d);
-			return d.education;
+		.append('p')
+		.html(function(d){
+			return '<div class="well">' + (d.job_ID ? 'JOB #' + d.job_ID : 'No ID.') + ' <a href="' + d.url + '">View job</a>' + '<br /><small>' + (d.description ? d.description : 'No description.') + '</small></div>';
 		});
-
-		$svg.selectAll('rect').data(data)
-		.enter()
-		.append('rect')
-		.attr('height', function(k, d){
-			log(k);
-			log(d);
-		})
-		.attr('width', function(k, d){
-			return k * 2;
-		});
+		unloader();
 	}
 
-	function log(msg) {
-		console.log(msg);
+	function log(data) {
+		if(console && typeof console === 'object') {
+			console.log(data);
+		}
 	}
 
 	function init(data) {
 		var $links = $('.json-file');
-		$links.on('click', loadData);
+		$links.on('click', loadJSON);
 	}
 
 	return {
