@@ -1,21 +1,26 @@
 from pprint import pprint as ppr
-import helpers
+from helpers import generic as gen
+from helpers.careerbuilder import CareerBuilderHelper as Cb
+from helpers.onetonline import OnetOnlineHelper as Onet
 
 process_first = raw_input('Process json first? y/n ==> ')
 run_all_tests = raw_input('Run all tests? y/n ==> ')
 
-if process_first == 'y':
-    helpers.process_all()
+print('Enter a spider to run: ')
+print(gen.get_spiders_list())
+spider = raw_input('Spider: ==> ')
 
-if run_all_tests == 'y':
-    helpers.run_all()
-else:
-    print 'Enter a spider to run: '
-    print helpers.get_spiders_list()
-    spider = raw_input('Spider: ==> ')
-    if spider == 'careerbuilder':
-        print 'Enter a job title to run:'
-        print ppr(helpers.load_all_categories())
+if spider == 'careerbuilder':
+    if process_first == 'y':
+        Cb.process_all()
+    if run_all_tests == 'y':
+        Cb.run_all()
+    else:
+        print('Enter a job title to run:')
+        ppr(Cb.CareerBuilderHelper.load_categories())
         keyword = raw_input('Title: ==> ')
         if keyword:
-            helpers.process_one(spider, keyword)
+            Cb.process_one(spider, keyword)
+elif spider == 'onet':
+    print('Enter a job category to run:')
+    ppr(Onet.load_onet_categories())
