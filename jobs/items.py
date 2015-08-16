@@ -1,10 +1,4 @@
-# Define here the models for your scraped items
-#
-# See documentation in:
-# http://doc.scrapy.org/en/latest/topics/items.html
-
 from scrapy.item import Item, Field
-
 
 """
     ==== SCRAPING
@@ -54,6 +48,44 @@ from scrapy.item import Item, Field
 
     ==== ANALYSIS
 """
+
+
+class OnetJob(Item):
+    # Root url: http://www.onetonline.org/link/summary/{JOB_ID}
+
+    url = Field()
+    alt_title = Field()
+    job_sample = Field()
+    summary = Field()
+    # Sections on the website
+    tasks = Field()
+    tools = Field()
+    technology = Field()
+    knowledge = Field()
+    skills = Field()
+    abilities = Field()
+    work_activities = Field()
+    detailed_work_activities = Field()
+    work_context = Field()
+    job_zone = Field()
+    education = Field()
+    credentials = Field()
+    interests = Field()
+    work_styles = Field()
+    work_values = Field()
+    related_occupations = Field()
+    wages_employment = Field()
+    job_openings = Field()
+    additional_info = Field()
+
+
+class ONetCategory(Item):
+    id = Field()
+    name = Field()
+    url = Field()
+    # Bureau of Labor Statistics
+    bls_url = Field()
+    occupation_data = Field()
 
 
 class JobDetail(Item):
