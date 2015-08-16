@@ -10,6 +10,11 @@ class ONetCategoriesSpider(Spider):
     start_urls = []
     occupations = []
 
+    def __init__(self, *args, **kwargs):
+        super(ONetCategoriesSpider, self).__init__(*args, **kwargs)
+        # Setup URLs
+        self._get_category_urls()
+
     def _kword_url(self):
         return self.root_url.format()
 
@@ -19,13 +24,9 @@ class ONetCategoriesSpider(Spider):
 
     def _get_category_urls(self):
         html = Pq(url=self.root_url, parser='html')
+        # Get all category IDs from dropdown menu
         Pq(html).find('#content .formsub select option').each(
             self._process_option)
-
-    def __init__(self, *args, **kwargs):
-        super(ONetCategoriesSpider, self).__init__(*args, **kwargs)
-        # Setup URLs
-        self._get_category_urls()
 
     def _extract_occupation(self, row_num, row):
         # First row is incorrectly used as a thead row.
@@ -63,9 +64,8 @@ class ONetCategoriesSpider(Spider):
         category = items.ONetCategory()
         html = Pq(response.body)
         category['url'] = response.url
-        category['id'] = response.url.replace(
-            'http://www.onetonline.org/find/industry/?i', '').replace(
-                '&g=Go', '')
+        category['id'] = response.url.replace('{}?i'.format(
+            self.root_url), '').replace('&g=Go', '')
         category['bls_url'] = html.find(
             'div.reportdesc a:first').attr('href')
         category['occupation_data'] = self._extract_occupations(html)
