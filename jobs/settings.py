@@ -11,6 +11,7 @@ SPIDER_MODULES = ['jobs.spiders']
 NEWSPIDER_MODULE = 'jobs.spiders'
 ITEM_PIPELINES = [
     'jobs.pipelines.FilterJobDetailsPipeline',
+    'jobs.pipelines.MongoPipeline',
 ]
 
 # Crawl responsibly by identifying yourself
@@ -27,7 +28,7 @@ MONGODB_DATABASE = 'jobs'
 MONGODB_COLLECTION = 'jobs'
 MONGODB_ADD_TIMESTAMP = True
 
-USE_DB = False
+USE_DB = True
 
 if USE_DB:
     ITEM_PIPELINES.append('scrapy_mongodb.MongoDBPipeline')
