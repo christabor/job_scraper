@@ -9,7 +9,7 @@ ALL_CATEGORIES = 'fixtures/careerbuilder_all-job-categories.json'
 class CareerBuilderHelper:
 
     @staticmethod
-    def process_all():
+    def write_all_to_html():
         with open('index.html', 'rb') as htmlfile:
             html = Pq(htmlfile.read())
             html.find('a').each(CareerBuilderHelper._process_link)

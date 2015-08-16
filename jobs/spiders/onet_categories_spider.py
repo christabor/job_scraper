@@ -42,16 +42,16 @@ class ONetCategoriesSpider(Spider):
             # 4. Projected openings
             td = Pq(td)
             if k == 0:
-                data['num_employed'] = td.text().strip()
+                data['num_employed'] = td.text()
             if k == 1:
-                data['code'] = td.text().strip()
+                data['code'] = td.text()
             if k == 2:
                 subdata = {'job': td.text(), 'link': td.find('a').attr('href')}
                 data['occupation'] = subdata
             if k == 3:
                 data['projected_growth'] = td.find('img').attr('alt')
             if k == 4:
-                data['projected_openings'] = td.text().strip()
+                data['projected_openings'] = td.text()
 
         Pq(row).find('td').each(handle_td)
         self.occupations.append(data)
@@ -64,8 +64,11 @@ class ONetCategoriesSpider(Spider):
         category = items.ONetCategory()
         html = Pq(response.body)
         category['url'] = response.url
+        category['name'] = html.find('.reportdesc:eq(0)').text().replace(
+            'Save Table ( XLS / CSV )', '')
         category['id'] = response.url.replace('{}?i'.format(
-            self.root_url), '').replace('&g=Go', '')
+            self.root_url), '').replace(
+                '&g=Go', '').replace('=', '').replace('.', '')
         category['bls_url'] = html.find(
             'div.reportdesc a:first').attr('href')
         category['occupation_data'] = self._extract_occupations(html)

@@ -7,11 +7,12 @@ print('Enter a spider to run: ')
 print(gen.get_spiders_list())
 spider = raw_input('Spider: ==> ')
 
-if spider == 'careerbuilder':
-    process_first = raw_input('Process json first? y/n ==> ')
+# Careerbuilder
+if spider == '1':
+    process_first = raw_input('Write JSON to app first? y/n ==> ')
     run_all_tests = raw_input('Run all tests? y/n ==> ')
     if process_first == 'y':
-        Cb.process_all()
+        Cb.write_all_to_html()
     if run_all_tests == 'y':
         Cb.run_all()
     else:
@@ -21,9 +22,15 @@ if spider == 'careerbuilder':
         if keyword:
             Cb.process_one(spider, keyword)
 
-elif spider == 'onet_categories':
-    print('Not implemented...')
-    ppr(Onet.load_onet_categories())
+# Onet categories
+elif spider == '2':
+    print(Onet.load_categories())
+    id = raw_input('Choose a job category ID ==> ')
+    print(id)
 
-elif spider == 'onet_jobs':
+# Onet jobs
+elif spider == '3':
     print('Not implemented...')
+
+else:
+    print('"{}" is an invalid spider.'.format(spider))
