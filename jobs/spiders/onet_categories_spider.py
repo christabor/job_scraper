@@ -3,9 +3,9 @@ from pyquery import PyQuery as Pq
 from jobs import items
 
 
-class ONetCategorySpider(Spider):
+class ONetCategoriesSpider(Spider):
 
-    name = 'onet_category'
+    name = 'onet_categories'
     root_url = 'http://www.onetonline.org/find/industry/'
     start_urls = []
     occupations = []
@@ -14,17 +14,17 @@ class ONetCategorySpider(Spider):
         return self.root_url.format()
 
     def _process_option(self, k, option):
-        self.start_urls.append(
-            '{}?i={}&g=Go'.format(self.root_url, Pq(option).val()))
+        self.start_urls.append('{}?i={}&g=Go'.format(
+            self.root_url, Pq(option).val()))
 
     def _get_category_urls(self):
         html = Pq(url=self.root_url, parser='html')
         Pq(html).find('#content .formsub select option').each(
             self._process_option)
 
-    def __init__(self, category=None, *args, **kwargs):
-        super(ONetCategorySpider, self).__init__(*args, **kwargs)
-        # Setup urls
+    def __init__(self, *args, **kwargs):
+        super(ONetCategoriesSpider, self).__init__(*args, **kwargs)
+        # Setup URLs
         self._get_category_urls()
 
     def _extract_occupation(self, row_num, row):
