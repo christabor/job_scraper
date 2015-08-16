@@ -1,17 +1,42 @@
 import json
 from flask import Flask
 from flask import render_template
-import helpers
+from helpers.careerbuilder import CareerBuilderHelper
+from helpers.onetonline import OnetOnlineHelper
 
 
 app = Flask(__name__)
 app.debug = True
 
 
+@app.template_filter('islist')
+def is_list(value):
+    return isinstance(value, list)
+
+
 @app.route('/')
 def index():
-    files = helpers.load_all_categories()
-    return render_template('index.html', files=files)
+    return render_template('index.html')
+
+
+@app.route('/onetonline-job/<category_id>')
+def onetonline_job(category_id):
+    with open('fixtures/onet_jobs/{}.json'.format(category_id), 'rb') as jobs:
+        data = json.loads(jobs.read())
+        jobs.close()
+    return render_template('onetonline_job.html', job=data)
+
+
+@app.route('/onetonline')
+def onetonline():
+    files = OnetOnlineHelper.read_categories()
+    return render_template('onetonline.html', categories=files)
+
+
+@app.route('/careerbuilder')
+def careerbuilder():
+    files = CareerBuilderHelper.load_categories()
+    return render_template('careerbuilder.html', files=files)
 
 
 @app.route('/json/<jobfile>', methods=['GET'])

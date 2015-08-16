@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="row">
+	<div class="col-md-12">
+		{% for section in job %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"></h3>
+			</div>
+			<div class="panel-body">
+				{% for subtitle, data in section.iteritems() %}
+				<h4>{{ subtitle|capitalize|replace('_', ' ') }} </h4>
+				{% if data is mapping %}
+				{% for k, v in data.iteritems() %}
+				<p><strong>{{ k|upper }}</strong></p>
+				<ul>
+					{% for v in v %}
+					{% if v|islist %}
+					{% for k, v in v %}
+					<li>{{ v }}</li>
+					{% endfor %}
+					{% else %}
+					<li>{{ v }}</li>
+					{% endif %}
+					{% endfor %}
+				</ul>
+				{% endfor %}
+				{% elif data|islist %}
+				<ul>
+					{% for v in data %}
+					{% if v|islist %}
+					{% for k, v in v %}
+					<li>{{ v }}</li>
+					{% endfor %}
+					{% else %}
+					<li>{{ v }}</li>
+					{% endif %}
+					{% endfor %}
+				</ul>
+				{% else %}
+				<p>{{ data }}</p>
+				{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</section>
+{% endblock %}

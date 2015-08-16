@@ -1,76 +1,20 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, maximum-scale=1">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-	<link href='http://fonts.googleapis.com/css?family=Buenard:400,700|Varela|Varela+Round' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-	<title>Data scraper app!</title>
-</head>
-<body>
-	<div class="container">
-		<section class="row">
-			<div class="col-md-12">
-				<div class="page-header">
-					<h1>
-						<span class="fa fa-bolt"></span> Job data loader
-						<small>A flask app that uses Scrapy and d3.js for loading visualizations of scraped data.</small>
-					</h1>
-					<p></p>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="panel-group" id="listing">
-					{% for letter, category in files.iteritems() %}
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion" href="#{{ letter }}">
-									<small>Jobs:</small> {{ letter }}
-									<span class="fa fa-angle-down"></span>
-								</a>
-							</h4>
-						</div>
-						<div id="{{ letter}}" class="panel-collapse collapse">
-							<div class="panel-body">
-								{% for keyword in category %}
-								<p>
-									{{ keyword|replace('+', ' ') }}
-									<a href="json/{{ keyword }}" class="pull-right json-file">Load
-										<span class="fa fa-angle-right"></span>
-									</a>
-									<hr>
-								</p>
-								{% endfor %}
-							</div>
-						</div>
-					</div>
-					{% endfor %}
-				</div>
-			</div>
-			<div class="col-md-8">
-				<h2>Results</h2>
-				<p>None (click to load).</p>
-				<h4 class="loading-icon pulsing loader hidden">
-					<span class="fa fa-refresh loading-icon rotating"></span>
-					<span class="content">Loading...</span>
-				</h4>
-				<div id="results" class="hidden">Here is some data...</div>
-			</div>
-		</section>
-	</div>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.5/d3.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-	<script src="{{ url_for('static', filename='js/app.js') }}"></script>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Welcome! Click a job source below</h2>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Sources</h3>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li><a href="/careerbuilder">Careerbuilder</a></li>
+                    <li><a href="/onetonline">OnetOnline</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

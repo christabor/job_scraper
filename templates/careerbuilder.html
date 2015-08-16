@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="row">
+	<div class="col-md-12">
+		<div class="page-header">
+			<h1>
+				<span class="fa fa-bolt"></span> Job data loader
+				<small>A flask app that uses Scrapy and d3.js for loading visualizations of scraped data.</small>
+			</h1>
+			<p></p>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="panel-group" id="listing">
+			{% for letter, category in files.iteritems() %}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#{{ letter }}">
+							<small>Jobs:</small> {{ letter }}
+							<span class="fa fa-angle-down"></span>
+						</a>
+					</h4>
+				</div>
+				<div id="{{ letter}}" class="panel-collapse collapse">
+					<div class="panel-body">
+						{% for keyword in category %}
+						<p>
+							{{ keyword|replace('+', ' ') }}
+							<a href="json/{{ keyword }}" class="pull-right json-file">Load
+								<span class="fa fa-angle-right"></span>
+							</a>
+							<hr>
+						</p>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="col-md-8">
+		<h2>Results</h2>
+		<p>None (click to load).</p>
+		<h4 class="loading-icon pulsing loader hidden">
+			<span class="fa fa-refresh loading-icon rotating"></span>
+			<span class="content">Loading...</span>
+		</h4>
+		<div id="results" class="hidden">Here is some data...</div>
+	</div>
+</section>
+{% endblock %}

@@ -7,3 +7,6 @@ onet_jobs:
 	@echo "Crawling all jobs for ONet Online"
 	trap "rm fixtures/onet_jobs.json" SIGHUP SIGINT SIGTERM
 	scrapy crawl onet_jobs -o -a url=$1 fixtures/onet_jobs.json -t json
+
+flask:
+	python flask-app.py
