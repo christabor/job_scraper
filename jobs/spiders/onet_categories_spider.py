@@ -46,7 +46,7 @@ class ONetCategoriesSpider(Spider):
             if k == 1:
                 data['code'] = td.text()
             if k == 2:
-                subdata = {'job': td.text(), 'link': td.find('a').attr('href')}
+                subdata = {'job': td.text(), 'url': td.find('a').attr('href')}
                 data['occupation'] = subdata
             if k == 3:
                 data['projected_growth'] = td.find('img').attr('alt')

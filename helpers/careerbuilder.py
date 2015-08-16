@@ -21,7 +21,7 @@ class CareerBuilderHelper:
     @staticmethod
     def process_one(spider, keyword):
         cmd = ('scrapy crawl {spider} -a category={keyword} -o '
-               'data/{spider}/{keyword}.json -t json').format(
+               'fixtures/{spider}/{keyword}.json -t json').format(
                    spider=spider, keyword=keyword)
         try:
             os.system(cmd)

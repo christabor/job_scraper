@@ -24,9 +24,19 @@ if spider == '1':
 
 # Onet categories
 elif spider == '2':
+    print('Pick a category to run:')
     print(Onet.load_categories())
     id = raw_input('Choose a job category ID ==> ')
-    print(id)
+    occupations = Onet.load_occupations(id)
+    process_all = raw_input('Process all? y/n ==> ')
+    if process_all == 'y':
+        Onet.process_all_jobs(id)
+    else:
+        print('Occupations for ID {}'.format(id))
+        print(occupations)
+        code = raw_input('Pick a job code to run ==> ')
+        if code:
+            Onet.process_job(code)
 
 # Onet jobs
 elif spider == '3':

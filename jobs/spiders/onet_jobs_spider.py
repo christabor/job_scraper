@@ -6,13 +6,13 @@ from jobs import items
 class ONetJobSpider(Spider):
 
     start_urls = []
-    root_url = 'http://www.onetonline.org/find/industry/'
+    root_url = 'http://www.onetonline.org/link/summary/{}'
     name = 'onet_jobs'
 
-    def __init__(self, url=None, *args, **kwargs):
+    def __init__(self, id=None, *args, **kwargs):
         super(ONetJobSpider, self).__init__(*args, **kwargs)
-        if url is not None:
-            self.start_urls = [url]
+        if id is not None:
+            self.start_urls = [self.root_url.format(id)]
 
     def _list(self, html, dom_selector, custom=None):
         items = []
