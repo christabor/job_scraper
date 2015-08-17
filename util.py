@@ -8,6 +8,7 @@ def _startdir(folder):
 
 
 def backfill_data(collection_name, source_folder, max=None):
+    # http://docs.mongodb.org/manual/reference/program/mongoimport/
     for k, filename in enumerate(get_files(source_folder)):
         if max is not None and k == max:
             print('Stopped at limit {}'.format(max))
@@ -23,9 +24,6 @@ def backfill_data(collection_name, source_folder, max=None):
         except KeyboardInterrupt:
             print('Stopped.')
             break
-
-
-# mongoimport --db users --collection contacts --file contacts.json
 
 
 def get_files(folder, pattern='.json'):
