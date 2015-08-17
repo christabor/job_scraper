@@ -25,7 +25,7 @@ USE_REPLICA = False
 MONGODB_REPLICA_SET = 'jobs-replica'
 
 if USE_DB:
-    ITEM_PIPELINES.append('scrapy_mongodb.MongoDBPipeline')
+    ITEM_PIPELINES.append('jobs.pipelines.MongoPipeline')
 
 if USE_REPLICA:
     MONGODB_URI = ''  # Replica hosts
