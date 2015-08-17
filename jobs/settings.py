@@ -1,17 +1,8 @@
-# Scrapy settings for jobs project
-#
-# For simplicity, this file contains only the most important settings by
-# default. All the other settings are documented here:
-#
-#     http://doc.scrapy.org/en/latest/topics/settings.html
-#
-
 BOT_NAME = 'jobs'
 SPIDER_MODULES = ['jobs.spiders']
 NEWSPIDER_MODULE = 'jobs.spiders'
 ITEM_PIPELINES = [
     'jobs.pipelines.FilterJobDetailsPipeline',
-    'jobs.pipelines.MongoPipeline',
 ]
 
 # Crawl responsibly by identifying yourself
@@ -23,12 +14,18 @@ AWS_SECRET_ACCESS_KEY = ''
 DOWNLOAD_DELAY = 0.2
 
 # MongoDB pipeline
+# https://github.com/sebdah/scrapy-mongodb
 MONGODB_URI = 'mongodb://localhost:27017'
 MONGODB_DATABASE = 'jobs'
 MONGODB_COLLECTION = 'jobs'
 MONGODB_ADD_TIMESTAMP = True
 
 USE_DB = True
+USE_REPLICA = False
+MONGODB_REPLICA_SET = 'jobs-replica'
 
 if USE_DB:
     ITEM_PIPELINES.append('scrapy_mongodb.MongoDBPipeline')
+
+if USE_REPLICA:
+    MONGODB_URI = ''  # Replica hosts
