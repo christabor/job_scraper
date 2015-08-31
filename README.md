@@ -7,8 +7,6 @@ With the CareerBuilder scaper, I was able to execute a very large dataset of url
 
 With the Onet scraper, I scraped the entirety of Onet's job categories, then automatically, and recursively, scrape all category job pages. It took several hours with respectful request settings, but I was still able to both scrape, save to json, and load via Mongo **1,073 job types** and detailed information for each!
 
-I'll probably add some D3js visualizations once I've fine tuned it all.
-
 ## Current Scrapers
 
 #### CareerBuilder
@@ -29,3 +27,8 @@ Each scraper job provides its own class for dealing with command line parsing of
 ## Persistence
 
 By default, jobScraper is setup to handle storage to Mongo, as well as the default json flatfile. These can be used interchangeably, and a few helper scripts have been added for munging and backfilling data into mongo. The run script also allows navigating the downloaded json files and using them as options for the command line tool. The idea is to allow moving between raw json files, command line, and high-level persistence like Mongo.
+
+## More...
+
+I'll probably add some D3js visualizations once I've fine tuned it all and figured out exactly what I want to do with it. It's mostly a project with no clear vision, but I have been slowly tweaking it to become a pretty respectable scraper for all things job related.
+    
