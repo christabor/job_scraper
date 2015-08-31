@@ -24,3 +24,7 @@ is the preferred one, since the site structure is more consistent and job data i
 While the makefile provides some commands to quickly run scrapy jobs, the `run.py` file provides all command line access. All helper code for interacting with the user is provided here.
 
 Each scraper job provides its own class for dealing with command line parsing of the structured data that was scraped. The general idea is that large JSON datasets are downloaded once, then parsed by the CLI and traversed directly, allowing programmatic access to the raw JSON itself, for future use.
+
+## Persistence
+
+By default, jobScraper is setup to handle storage to Mongo, as well as the default json flatfile. These can be used interchangeably, and a few helper scripts have been added for munging and backfilling data into mongo. The run script also allows navigating the downloaded json files and using them as options for the command line tool. The idea is to allow moving between raw json files, command line, and high-level persistent like Mongo.
