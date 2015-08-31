@@ -27,4 +27,4 @@ Each scraper job provides its own class for dealing with command line parsing of
 
 ## Persistence
 
-By default, jobScraper is setup to handle storage to Mongo, as well as the default json flatfile. These can be used interchangeably, and a few helper scripts have been added for munging and backfilling data into mongo. The run script also allows navigating the downloaded json files and using them as options for the command line tool. The idea is to allow moving between raw json files, command line, and high-level persistent like Mongo.
+By default, jobScraper is setup to handle storage to Mongo, as well as the default json flatfile. These can be used interchangeably, and a few helper scripts have been added for munging and backfilling data into mongo. The run script also allows navigating the downloaded json files and using them as options for the command line tool. The idea is to allow moving between raw json files, command line, and high-level persistence like Mongo.
