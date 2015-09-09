@@ -32,7 +32,7 @@
 							{% for k, v in section.iteritems() %}
 							<td width="{% if loop.index == 5 %}50%{% else %}15%{% endif %}">
 								{% if k == 'code' %}
-									<a href="/onetonline-job/{{ v }}">View #{{ v }}</a><br>
+									<a href="/onet/job/{{ v }}/detail">View #{{ v }}</a><br>
 								{% elif k == 'occupation' %}
 								<ul>
 									{% for k, v in v.iteritems() %}
