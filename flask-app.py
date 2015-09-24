@@ -2,12 +2,16 @@ import json
 from flask import Flask
 from flask import request
 from flask import render_template
-from flask import json as flask_json
 from helpers.careerbuilder import CareerBuilderHelper
 from helpers.onetonline import OnetOnlineHelper
 
 app = Flask(__name__)
 app.debug = True
+
+
+@app.template_filter('blank')
+def blank(value):
+    return value == ''
 
 
 @app.template_filter('islist')
@@ -50,9 +54,15 @@ def onetonline_job(job_id):
 @app.route('/onet/job/<job_id>/detail')
 def onet_jobdata(job_id):
     filedata = None
-    with open('fixtures/onet_jobs/{}.json'.format(job_id), 'rb') as currfile:
-        filedata = currfile.read()
-    return filedata
+    with open('fixtures/onet_jobs/{}.json'.format(job_id), 'rb') as jobs:
+        if 'as_json' in request.args:
+            return json.dumps(jobs.read())
+        data = json.loads(jobs.read())
+        jobs.close()
+    if 'as_json' in request.args:
+        return filedata
+    back_url = '/onet'
+    return render_template('json_view.html', data=data[0], back_url=back_url)
 
 
 @app.route('/onet/job/<job_id>/detail/key/<value>')
@@ -60,7 +70,11 @@ def onet_jobdata_key(job_id, value):
     filedata = None
     with open('fixtures/onet_jobs/{}.json'.format(job_id), 'rb') as currfile:
         filedata = dict(json.loads(currfile.read())[0])
-    return json.dumps(filedata[value])
+        data = filedata[value]
+    if 'as_json' in request.args:
+        return json.dumps(data)
+    back_url = '/onet/job/{}/detail'.format(job_id)
+    return render_template('json_view.html', data=data, back_url=back_url)
 
 
 @app.route('/careerbuilder')

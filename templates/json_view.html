@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+<!-- Experimental JSON-navigable UI -->
+
+{% block content %}
+<section class="row">
+	<div class="col-md-12">
+
+		<p><a href="{{ back_url }}">&larr; Back</a></p>
+
+		{% if data is sequence and data is not mapping %}
+
+		{% for k in data %}
+			{{ k }}
+			<hr>
+		{% endfor %}
+
+		{% elif data is mapping %}
+
+		{% for k, v in data.iteritems() %}
+			<h3><a href="detail/key/{{ k }}">{{ k|replace('_', ' ') }}</a></h3>
+			{% if v|islist %}
+				<ol>
+					{% for subk in v %}
+						<li>{{ subk }}</li>
+					{% endfor %}
+				</ol>
+			{% elif v is mapping %}
+				<ol>
+					{% for subk, subv in v.iteritems() %}
+						<li>{{ subk }} - {{ subv }}</li>
+					{% endfor %}
+				</ol>
+			{% else %}
+
+				{% if v|blank %}
+					<p>...</p>
+				{% else %}
+					<p>{{ v }}</p>
+				{% endif %}
+
+			{% endif %}
+			<hr>
+		{% endfor %}
+
+		{% else %}
+
+		{{ data }}
+
+		{% endif %}
+
+	</div>
+</section>
+{% endblock %}
