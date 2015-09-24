@@ -16,14 +16,15 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 	<title>Data scraper app!</title>
 </head>
-<body>
-	<div class="container">
+<body data-spy="scroll" data-target=".scrollspy">
+	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-12 text-center">
 				<h1>
-					<span class="fa fa-bolt"></span> Job data loader
+					<span class="fa fa-bolt"></span> JobScraper data loader
 					<small>A flask app that uses Scrapy and d3.js for loading visualizations of scraped data.</small>
 				</h1>
+				<hr>
 			</div>
 		</div>
 		{% block content %}{% endblock %}

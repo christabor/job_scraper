@@ -4,8 +4,8 @@
 	box-sizing: border-box;
 }
 body {
-	background-color: #f1f1f1;
 	padding: 0;
+	position: relative;
 	margin: 0;
 }
 h1 {
@@ -26,6 +26,23 @@ p, ul, ol, input, textarea, dl, dt {
 }
 .panel-title > a {
 	display: block;
+}
+.affix {
+	top: 100px;
+	max-width: 350px;
+	min-width: 100px;
+	padding: 10px 0 20px 0;
+}
+.nav .active {
+  font-weight: bold;
+  background: #444;
+  color: white;
+}
+.nav .active a {
+	color: white;
+}
+.nav .active a:hover {
+	color: black;
 }
 @-webkit-keyframes rotate {
 	0% {

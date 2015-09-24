@@ -20,10 +20,9 @@ class OnetOnlineHelper:
         categories = []
         for category in data:
             if category is not None:
-                if 'name' in category and 'name' in category:
-                    if category['name'] != '':
-                        categories.append('{}. {}'.format(
-                            category['id'], category['name']))
+                if 'name' in category and category['name'] != '':
+                    categories.append('{}. {}'.format(
+                        category['id'], category['name']))
         if as_string:
             return '\n'.join(categories)
         return categories

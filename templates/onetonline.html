@@ -2,72 +2,22 @@
 
 {% block content %}
 <section class="row">
-	<div class="col-md-12">
-		<p class="lead">{{ categories|length }} jobs</p>
-		{% for category in categories %}
-		{% if loop.index < 4 %}
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">
-					{{ category['id'] }}: {{ category['name'] }}
-				</h3>
-			</div>
-			<div class="panel-body">
-				{% for k, v in category.iteritems() %}
-				{% set idx = loop.index %}
-				{% if k == 'occupation_data' %}
-				{% for section in v %}
-				<table class="table table-striped">
-					{% if loop.index == 1 %}
-					<thead>
-						<tr>
-							{% for k, v in section.iteritems() %}
-								<th>{{ k|replace('_', ' ')|capitalize }}</th>
-							{% endfor %}
-						</tr>
-					</thead>
-					{% endif %}
-					<tbody>
-						<tr>
-							{% for k, v in section.iteritems() %}
-							<td width="{% if loop.index == 5 %}50%{% else %}15%{% endif %}">
-								{% if k == 'code' %}
-									<a href="/onet/job/{{ v }}/detail">View #{{ v }}</a><br>
-								{% elif k == 'occupation' %}
-								<ul>
-									{% for k, v in v.iteritems() %}
-									<li>
-										{% if k == 'url' %}
-										<a href="{{ v }}">View job on ONet</a>
-										{% else %}
-										{{ v }}
-										{% endif %}
-									</li>
-									{% endfor %}
-								</ul>
-								{% else %}
-								{{ v }}
-								{% endif %}
-							</td>
-							{% endfor %}
-						</tr>
-					</tbody>
-				</table>
-				{% endfor %}
-				{% else %}
-				<h3>
-					<strong>{{ k }}</strong>
-					{% if k == 'url' %}
-					<a href="{{ v }}">{{ v }}</a>
-					{% else %}
-					{{ v }}
-					{% endif %}
-				</h3>
+	<div class="col-md-3 scrollspy">
+		<ul data-spy="affix" class="nav">
+			<li class="lead"><strong>Categories</strong></li>
+			{% for category in categories %}
+				{% if loop.index < max %}
+					<li>
+						<a href="#job-{{ category['id'] }}">{{ category['name'] }}</a>
+					</li>
 				{% endif %}
-				<hr>
-				{% endfor %}
-			</div>
-		</div>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col-md-9">
+		{% for category in categories %}
+		{% if loop.index < max %}
+			{% include 'partials/onet-category.html' %}
 		{% endif %}
 		{% endfor %}
 	</div>

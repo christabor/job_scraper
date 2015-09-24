@@ -2,6 +2,7 @@ import json
 from flask import Flask
 from flask import request
 from flask import render_template
+from flask import json as flask_json
 from helpers.careerbuilder import CareerBuilderHelper
 from helpers.onetonline import OnetOnlineHelper
 
@@ -22,7 +23,12 @@ def index():
 @app.route('/onet')
 def onetonline():
     files = OnetOnlineHelper.read_categories()
-    return render_template('onetonline.html', categories=files)
+    # Limit set since the number of categories is insane... lazy load?
+    data = {
+        'categories': files,
+        'max': 5
+    }
+    return render_template('onetonline.html', **data)
 
 
 @app.route('/onet/dataviz')
@@ -46,7 +52,15 @@ def onet_jobdata(job_id):
     filedata = None
     with open('fixtures/onet_jobs/{}.json'.format(job_id), 'rb') as currfile:
         filedata = currfile.read()
-    return json.dumps(filedata)
+    return filedata
+
+
+@app.route('/onet/job/<job_id>/detail/key/<value>')
+def onet_jobdata_key(job_id, value):
+    filedata = None
+    with open('fixtures/onet_jobs/{}.json'.format(job_id), 'rb') as currfile:
+        filedata = dict(json.loads(currfile.read())[0])
+    return json.dumps(filedata[value])
 
 
 @app.route('/careerbuilder')
