@@ -41,16 +41,6 @@ def onet_dataviz():
     return render_template('onet_dataviz.html')
 
 
-@app.route('/onet/job/<job_id>')
-def onetonline_job(job_id):
-    with open('fixtures/onet_jobs/{}.json'.format(job_id), 'rb') as jobs:
-        if 'as_json' in request.args:
-            return json.dumps(jobs.read())
-        data = json.loads(jobs.read())
-        jobs.close()
-    return render_template('onetonline_job.html', job=data)
-
-
 @app.route('/onet/job/<job_id>/detail')
 def onet_jobdata(job_id):
     filedata = None
@@ -62,7 +52,10 @@ def onet_jobdata(job_id):
     if 'as_json' in request.args:
         return filedata
     back_url = '/onet'
-    return render_template('json_view.html', data=data[0], back_url=back_url)
+    if 'json_nav' in request.args:
+        return render_template(
+            'json_view.html', data=data[0], back_url=back_url)
+    return render_template('onetonline_job.html', job=data)
 
 
 @app.route('/onet/job/<job_id>/detail/key/<value>')
