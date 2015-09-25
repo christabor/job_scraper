@@ -28,6 +28,7 @@
                     <td width="{% if loop.index == 5 %}50%{% else %}15%{% endif %}">
                         {% if k == 'code' %}
                             <a href="/onet/job/{{ v }}/detail">View #{{ v }}</a><br>
+                            <p class="subdue"><a href="/onet/job/{{ v }}/detail?as_json">raw JSON</a> or <a href="/onet/job/{{ v }}/detail?json_nav">JSON nav</a></p>
                         {% elif k == 'occupation' %}
                         <ul>
                             {% for k, v in v.iteritems() %}

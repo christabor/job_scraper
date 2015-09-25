@@ -24,6 +24,10 @@ p, ul, ol, input, textarea, dl, dt {
 	max-height: 100%;
 	overflow-y: scroll;
 }
+.subdue {
+	font-size: 80%;
+	opacity: 0.9;
+}
 .panel-title > a {
 	display: block;
 }
