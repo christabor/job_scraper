@@ -6,14 +6,19 @@
 <section class="row">
 	<div class="col-md-12">
 
-		<p><a href="{{ back_url }}">&larr; Back</a></p>
+		<p><a href="{{ back_url }}" class="btn btn-sm btn-info">&larr; Back</a></p>
 
-		{% if data is sequence and data is not mapping %}
+		{% if data is string or data is number %}
 
-		{% for k in data %}
-			{{ k }}
-			<hr>
-		{% endfor %}
+		 {{ data }}
+
+		{% elif data is sequence and data is not mapping %}
+
+			<ol>
+				{% for k in data %}
+					<li>{{ k }}</li>
+				{% endfor %}
+			</ol>
 
 		{% elif data is mapping %}
 
