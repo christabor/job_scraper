@@ -53,8 +53,13 @@ def onet_jobdata(job_id):
         return filedata
     back_url = '/onet'
     if 'json_nav' in request.args:
+        context = {
+            'data': data[0],
+            'back_url': back_url,
+            'heading': 'Job: ' + job_id
+        }
         return render_template(
-            'json_view.html', data=data[0], back_url=back_url)
+            'json_view.html', **context)
     return render_template('onetonline_job.html', job=data)
 
 
@@ -66,8 +71,12 @@ def onet_jobdata_key(job_id, value):
         data = filedata[value]
     if 'as_json' in request.args:
         return json.dumps(data)
-    back_url = '/onet/job/{}/detail'.format(job_id)
-    return render_template('json_view.html', data=data, back_url=back_url)
+    context = {
+        'data': data,
+        'back_url': '/onet/job/{}/detail'.format(job_id),
+        'heading': 'Job: ' + job_id
+    }
+    return render_template('json_view.html', **context)
 
 
 @app.route('/careerbuilder')
