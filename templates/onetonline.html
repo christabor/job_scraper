@@ -4,7 +4,7 @@
 <section class="row">
 	<div class="col-md-3 scrollspy">
 		<ul data-spy="affix" class="nav">
-			<li class="lead"><strong>Categories</strong></li>
+			<li class="lead"><strong>Categories preview</strong></li>
 			{% for category in categories %}
 				{% if loop.index < max %}
 					<li>
@@ -15,6 +15,15 @@
 		</ul>
 	</div>
 	<div class="col-md-9">
+		<h4>All categories <a href="#view-all" data-toggle="collapse" class="btn btn-info btn-sm">View</a></h4>
+		<div class="collapse" id="view-all">
+			<ul>
+				{% for category in categories %}
+					<li><a href="/onet/category/{{ category['id'] }}">{{ category['name'] }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+		<h4>Preview</h4>
 		{% for category in categories %}
 		{% if loop.index < max %}
 			{% include 'partials/onet-category.html' %}

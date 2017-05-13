@@ -30,9 +30,20 @@ def onetonline():
     # Limit set since the number of categories is insane... lazy load?
     data = {
         'categories': files,
-        'max': 5
+        'max': 4
     }
     return render_template('onetonline.html', **data)
+
+
+@app.route('/onet/category/<category_id>')
+def onetonline_category(category_id):
+    files = OnetOnlineHelper.read_categories()
+    # Ad-hoc way for now...
+    data = {
+        'categories': files,
+        'id': str(category_id),
+    }
+    return render_template('onetonline-category.html', **data)
 
 
 @app.route('/onet/dataviz')

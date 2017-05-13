@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-12">
+        <a href="/onet" class="btn btn-info">&larr; Back</a>
+		<h1>Job category {{ id }}</h1>
+		{% for category in categories %}
+		{% if category['id'] == id %}
+		{% include 'partials/onet-category.html' %}
+		{% endif %}
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

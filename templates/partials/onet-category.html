@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title clearfix" id="job-{{ category['id'] }}">
+        <h3 class="panel-title clearfix" id="category-{{ category['id'] }}">
             {{ category['name'] }} ({{ category['id'] }})
             <small class="pull-right">
                 ({{ categories|length }} jobs)
@@ -51,7 +51,7 @@
         </table>
         {% endfor %}
         {% else %}
-        <h3 id="job-{{ category['id'] }}">
+        <h3 id="category-{{ category['id'] }}">
             <strong>{{ k }}</strong>
             {% if k == 'url' %}
             <a href="{{ v }}">{{ v }}</a>
